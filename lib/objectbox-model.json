@@ -1,0 +1,195 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:8091855882071671905",
+      "lastPropertyId": "10:4341654225439993738",
+      "name": "Product",
+      "properties": [
+        {
+          "id": "1:6382313794465563722",
+          "name": "id",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:1654231124462536953",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:5030601851494308519",
+          "name": "description",
+          "type": 9
+        },
+        {
+          "id": "4:2945975673058616038",
+          "name": "model",
+          "type": 9
+        },
+        {
+          "id": "5:8779205425249026508",
+          "name": "path",
+          "type": 9
+        },
+        {
+          "id": "6:9201214401877343614",
+          "name": "editing",
+          "type": 1
+        },
+        {
+          "id": "7:6910626450500128331",
+          "name": "brandIndex",
+          "type": 6
+        },
+        {
+          "id": "8:2106678581067937458",
+          "name": "colorIndex",
+          "type": 6
+        },
+        {
+          "id": "9:4685073644749528017",
+          "name": "stock",
+          "type": 6
+        },
+        {
+          "id": "10:4341654225439993738",
+          "name": "price",
+          "type": 6
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "5:5158992040693962107",
+      "lastPropertyId": "6:8973137379076258382",
+      "name": "User",
+      "properties": [
+        {
+          "id": "1:3687616292067985248",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:5816812022827336791",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:4147950116996064526",
+          "name": "email",
+          "type": 9
+        },
+        {
+          "id": "4:8428267859498448322",
+          "name": "password",
+          "type": 9
+        },
+        {
+          "id": "5:2035065824286115776",
+          "name": "roleIndex",
+          "type": 6
+        },
+        {
+          "id": "6:8973137379076258382",
+          "name": "cityIndex",
+          "type": 6
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "6:9069988324371153085",
+      "lastPropertyId": "2:2364164196319984266",
+      "name": "Category",
+      "properties": [
+        {
+          "id": "1:5294511351316041737",
+          "name": "id",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:2364164196319984266",
+          "name": "name",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "7:2690931117030937189",
+      "lastPropertyId": "5:3102584807158081327",
+      "name": "Order",
+      "properties": [
+        {
+          "id": "1:4698548115286762469",
+          "name": "id",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:1341206876999011901",
+          "name": "editing",
+          "type": 1
+        },
+        {
+          "id": "3:1581989748259907097",
+          "name": "statusIndex",
+          "type": 6
+        },
+        {
+          "id": "4:860676888920829078",
+          "name": "createdOn",
+          "type": 10
+        },
+        {
+          "id": "5:3102584807158081327",
+          "name": "customerId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "1:6951291558336331659",
+          "relationTarget": "User"
+        }
+      ],
+      "relations": [
+        {
+          "id": "1:5320381477935521909",
+          "name": "products",
+          "targetId": "1:8091855882071671905"
+        }
+      ]
+    }
+  ],
+  "lastEntityId": "7:2690931117030937189",
+  "lastIndexId": "1:6951291558336331659",
+  "lastRelationId": "1:5320381477935521909",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [
+    1336564712599621495,
+    6331540883458232983,
+    4642833903358294383
+  ],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [
+    2972244715611468810,
+    1416314731801631373,
+    6739371273187752418,
+    1587781736321172294,
+    6966317835554274912,
+    604903400445658247,
+    6374101978588626679,
+    3848403668951896109,
+    69788653585533327,
+    2256481579363855267,
+    5297743587549750354,
+    8536948801261817010
+  ],
+  "retiredRelationUids": [],
+  "version": 1
+}
