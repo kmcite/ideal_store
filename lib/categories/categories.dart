@@ -1,18 +1,13 @@
-import 'package:ideal_store/authentication/authentication.dart';
-import 'package:ideal_store/main.dart';
+import 'package:ideal_store/authentication/authentication_bloc.dart';
+import 'package:ideal_store/categories/categories_bloc.dart';
+import 'package:manager/manager.dart';
 
 @Entity()
 class Category {
-  @ID
+  @Id(assignable: true)
   int id = 0;
   String name = "";
 }
-
-final categories = list(_categories, categoriesRM);
-final categoriesRM = rm(_categories);
-final _categories = box<Category>(store);
-
-final categoryRemover = _categories.remove;
 
 class CategoriesUI extends UI {
   const CategoriesUI({super.key});
@@ -24,37 +19,38 @@ class CategoriesUI extends UI {
         title: Text('CATEGORIES'),
       ),
       body: ListView.builder(
-        itemCount: categories().length,
+        itemCount: categoriesBloc.categories.length,
         itemBuilder: (context, index) {
-          final category = categories()[index];
+          final category = categoriesBloc.categories[index];
           return ListTile(
-            title: isAdmin
+            title: authenticationBloc.isAdmin
                 ? TextFormField(
                     initialValue: category.name,
                     onChanged: (value) {
-                      categories(category..name = value);
+                      categoriesBloc.put(category..name = value);
                     },
                   )
                 : FilledButton(
                     onPressed: () {},
                     child: category.name.text(),
                   ),
-            trailing: isAdmin
+            trailing: authenticationBloc.isAdmin
                 ? IconButton(
                     icon: Icon(Icons.delete),
                     onPressed: () {
-                      categoryRemover(category.id);
+                      categoriesBloc.remove(category.id);
                     },
                   )
                 : null,
           );
         },
       ),
-      floatingActionButton: isAdmin
+      floatingActionButton: authenticationBloc.isAdmin
           ? FloatingActionButton(
+              heroTag: randomId,
               child: Icon(Icons.add),
               onPressed: () {
-                categories(Category());
+                categoriesBloc.put(Category());
               },
             )
           : null,

@@ -1,6 +1,10 @@
 import 'package:ideal_store/dashboard/current_worth.dart';
+import 'package:ideal_store/products/product.dart';
+import 'package:ideal_store/products/products_bloc.dart';
+import 'package:manager/manager.dart';
 
-import '../main.dart';
+import 'package:ideal_store/main.dart';
+import 'package:ideal_store/navigator.dart';
 
 class DashboardPage extends UI {
   const DashboardPage({super.key});
@@ -10,7 +14,7 @@ class DashboardPage extends UI {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: 'Dashboard'.text(),
+        title: 'dashboard'.text(),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -18,38 +22,30 @@ class DashboardPage extends UI {
           'Welcome to Ideal Store'.text().pad(),
           currentWorth.text(textScaleFactor: 5).pad(),
           ElevatedButton(
-            onPressed: () {
-              currentIndex(1);
-            },
+            onPressed: () => appBloc.setIndex(1),
             child: Text('Go to Products'),
           ).pad(),
           Expanded(
             child: ListView.builder(
-              itemCount: productsRM.state.length,
+              itemCount: productsBloc.products.length,
               itemBuilder: (context, index) {
-                final product = productsRM.state[index];
+                final product = productsBloc.products[index];
                 return ListTile(
                   title: Text(product.name),
                   subtitle: Text('Price: \$${product.price}'),
                   trailing: IconButton(
                     icon: Icon(Icons.delete),
                     onPressed: () {
-                      removeProduct(product.id);
+                      productsBloc.remove(product.id);
                     },
                   ),
                   onTap: () {
                     // Edit product
-                    navigator.dialog(ProductDialog(product: product));
+                    navigator.toDialog(ProductDialog(product: product));
                   },
                 );
               },
             ),
-          ),
-          FloatingActionButton(
-            onPressed: () {
-              navigator.dialog(ProductDialog());
-            },
-            child: Icon(Icons.add),
           ),
         ],
       ),
@@ -57,50 +53,48 @@ class DashboardPage extends UI {
   }
 }
 
-class ProductDialog extends StatelessWidget {
-  final Product? product;
+class ProductDialog extends UI {
+  final Product product;
 
-  const ProductDialog({super.key, this.product});
+  const ProductDialog({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
-    final nameController = TextEditingController(text: product?.name ?? '');
+    final nameController = TextEditingController(text: product.name);
     final priceController =
-        TextEditingController(text: product?.price.toString() ?? '');
+        TextEditingController(text: product.price.toString());
 
     return AlertDialog(
-      title: Text(product == null ? 'Add Product' : 'Edit Product'),
+      title: Text('edit product'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
             controller: nameController,
-            decoration: InputDecoration(labelText: 'Name'),
-          ),
+            decoration: InputDecoration(labelText: 'name'),
+          ).pad(),
           TextField(
             controller: priceController,
-            decoration: InputDecoration(labelText: 'Price'),
+            decoration: InputDecoration(labelText: 'price'),
             keyboardType: TextInputType.number,
-          ),
+          ).pad(),
         ],
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => navigator.back(),
           child: Text('Cancel'),
         ),
-        ElevatedButton(
+        FilledButton(
           onPressed: () {
-            // final name = nameController.text;
-            // final price = double.tryParse(priceController.text) ?? 0.0;
-
-            // if (product == null) {
-            //   productsRM.create(Product(name: name, price: price));
-            // } else {
-            //   productsRM.update(product!.copyWith(name: name, price: price));
-            // }
-
-            Navigator.of(context).pop();
+            final name = nameController.text;
+            final price = int.tryParse(priceController.text) ?? 0;
+            productsBloc.put(
+              product
+                ..name = name
+                ..price = price,
+            );
+            navigator.back();
           },
           child: Text('Save'),
         ),

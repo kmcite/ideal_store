@@ -1,4 +1,4 @@
-import '../main.dart';
+import 'package:manager/manager.dart';
 
 enum Brand {
   urideal('URideal'),
@@ -9,15 +9,9 @@ enum Brand {
   final String description;
 }
 
-final _products = box<Product>(store);
-final productsRM = rm(_products);
-final products = list(_products, productsRM);
-
-void removeProduct(int id) => _products.remove(id);
-
 @Entity()
 class Product {
-  @ID
+  @Id(assignable: true)
   int id = 0;
   String name = '';
   String description = '';
@@ -32,12 +26,12 @@ class Product {
   @Transient()
   Brand get brandType => Brand.values[brandIndex];
   set brandType(Brand value) {
-    products(this..brandIndex = value.index);
+    brandIndex = value.index;
   }
 
   @Transient()
   MaterialColor get color => Colors.primaries[colorIndex];
   set color(MaterialColor value) {
-    products(this..colorIndex = Colors.primaries.indexOf(value));
+    colorIndex = Colors.primaries.indexOf(value);
   }
 }

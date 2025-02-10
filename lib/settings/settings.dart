@@ -1,4 +1,4 @@
-import 'package:ideal_store/main.dart';
+import 'package:manager/manager.dart';
 
 part 'settings.freezed.dart';
 part 'settings.g.dart';
@@ -6,7 +6,9 @@ part 'settings.g.dart';
 @freezed
 class Settings with _$Settings {
   const factory Settings({
-    @Default(Colors.amber) @MaterialColorConverter() MaterialColor materialColor,
+    @Default(Colors.amber)
+    @MaterialColorConverter()
+    MaterialColor materialColor,
     @Default(ThemeMode.system) ThemeMode themeMode,
     @Default(false) bool isAddCustomerVisible,
     @Default(false) bool isThemeModesExtended,
@@ -17,5 +19,6 @@ class Settings with _$Settings {
     @Default(8.0) double borderRadius,
   }) = _Settings;
 
-  factory Settings.fromJson(Map<String, dynamic> json) => _$SettingsFromJson(json);
+  factory Settings.fromJson(Map<String, dynamic> json) =>
+      _$SettingsFromJson(json);
 }

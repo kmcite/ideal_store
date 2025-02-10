@@ -1,6 +1,10 @@
 import 'dart:io';
 
-import '../../main.dart';
+import 'package:colornames/colornames.dart';
+import 'package:ideal_store/products/product.dart';
+import 'package:ideal_store/products/products_bloc.dart';
+import 'package:manager/manager.dart';
+
 import 'file_picker.dart';
 
 class ProductPage extends UI {
@@ -8,7 +12,7 @@ class ProductPage extends UI {
   const ProductPage({super.key, required this.productID});
   @override
   Widget build(BuildContext context) {
-    final product = products().firstWhere((p) => p.id == productID);
+    final product = productsBloc.get(productID)!;
     return Scaffold(
       body: ListView(
         children: [
@@ -61,7 +65,7 @@ class ProductPage extends UI {
               .pad(),
           (product.editing
                   ? DropdownButtonFormField(
-                      // value: product.brand,
+                      value: product.brandType,
                       items: Brand.values
                           .map(
                             (e) => DropdownMenuItem(
@@ -153,6 +157,7 @@ class ProductPage extends UI {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: randomId,
         onPressed: () {
           // productsRM(product.copyWith(editing: !product.editing));
         },

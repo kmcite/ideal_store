@@ -1,4 +1,8 @@
-import '../main.dart';
+import 'package:colornames/colornames.dart';
+import 'package:ideal_store/settings/settings_controller.dart';
+import 'package:manager/manager.dart';
+
+import 'package:ideal_store/shared/theme.dart';
 
 class MaterialColorsUI extends UI {
   const MaterialColorsUI({super.key});
@@ -26,14 +30,14 @@ class MaterialColorsUI extends UI {
                     backgroundColor: eachColor[900],
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
-                        settingsRM.borderRadius(),
+                        settingsBloc.borderRadius(),
                       ),
                     ),
                   ),
-                  onPressed: settingsRM.materialColor() == eachColor
+                  onPressed: settingsBloc.materialColor() == eachColor
                       ? null
                       : () {
-                          settingsRM.materialColor(eachColor);
+                          settingsBloc.materialColor(eachColor);
                         },
                   child: eachColor.colorName.text(textScaleFactor: .8),
                 ).pad(),

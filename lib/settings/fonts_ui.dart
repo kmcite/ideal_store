@@ -1,4 +1,7 @@
-import 'package:ideal_store/main.dart';
+import 'package:manager/manager.dart';
+
+import '../shared/theme.dart';
+import 'settings_controller.dart';
 
 class FontsUI extends UI {
   const FontsUI({super.key});
@@ -20,16 +23,16 @@ class FontsUI extends UI {
               for (final String eachFont in fonts)
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: settingsRM.materialColor()[100],
-                    backgroundColor: settingsRM.materialColor()[900],
+                    foregroundColor: settingsBloc.materialColor()[100],
+                    backgroundColor: settingsBloc.materialColor()[900],
                     shape: RoundedRectangleBorder(
                       borderRadius:
-                          BorderRadius.circular(settingsRM.borderRadius()),
+                          BorderRadius.circular(settingsBloc.borderRadius()),
                     ),
                   ),
-                  onPressed: switch (settingsRM.font() == eachFont) {
+                  onPressed: switch (settingsBloc.font() == eachFont) {
                     false => () {
-                        settingsRM.font(eachFont);
+                        settingsBloc.font(eachFont);
                       },
                     true => null,
                   },

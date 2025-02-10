@@ -1,23 +1,31 @@
-import 'package:ideal_store/main.dart';
+import 'package:ideal_store/authentication/authentication_bloc.dart';
+import 'package:ideal_store/products/product.dart';
+import 'package:ideal_store/products/product_page.dart';
+import 'package:ideal_store/products/products_bloc.dart';
+import 'package:manager/manager.dart';
+
+import '../navigator.dart';
 
 class ProductsPage extends UI {
   const ProductsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('PRODUCTS'),
+        title: Text('products'),
         actions: [
-          IconButton(
-            tooltip: 'Add Product',
-            onPressed: () {
-              products(Product());
-            },
-            icon: Icon(Icons.add_shopping_cart),
-          ).pad(),
+          if (authenticationBloc.isAdmin)
+            IconButton(
+              tooltip: 'add product',
+              onPressed: () {
+                productsBloc.put(
+                  Product(),
+                );
+              },
+              icon: Icon(Icons.add_shopping_cart),
+            ).pad(),
         ],
       ),
       body: SafeArea(
@@ -25,17 +33,15 @@ class ProductsPage extends UI {
           physics: BouncingScrollPhysics(),
           child: Column(
             children: [
-              if (products().isEmpty)
-                'No products'
+              if (productsBloc.products.isEmpty)
+                'no products'
                     .text(
                       textScaleFactor: 2,
                     )
                     .pad(),
-              ...products().map(
+              ...productsBloc.products.map(
                 (eachProduct) {
                   return ListTile(
-                    // productID: eachProduct.id,
-                    // size: size,
                     onTap: () {
                       navigator.to(ProductPage(productID: eachProduct.id));
                     },

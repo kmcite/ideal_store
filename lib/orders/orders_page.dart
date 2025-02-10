@@ -1,4 +1,6 @@
-import 'package:ideal_store/main.dart';
+import 'package:ideal_store/orders/orders_bloc.dart';
+import 'package:ideal_store/products/products_bloc.dart';
+import 'package:manager/manager.dart' hide Order;
 
 import 'order.dart';
 
@@ -29,10 +31,10 @@ class OrdersPage extends UI {
       ),
       body: SafeArea(
         child: ListView.builder(
-          itemCount: orders().length,
+          itemCount: ordersBloc.orders.length,
           itemBuilder: (context, index) {
             return orderRM.inherited(
-              stateOverride: () => orders()[index],
+              stateOverride: () => ordersBloc.orders[index],
               builder: (context) {
                 return ListTile();
               },
@@ -85,7 +87,7 @@ class OrderTile extends UI {
               children: order()
                   .products
                   .map(
-                    (eachProductID) => products().where(
+                    (eachProductID) => productsBloc.products.where(
                       (element) {
                         return element.id == eachProductID.id;
                       },
@@ -98,7 +100,7 @@ class OrderTile extends UI {
             ),
           ),
           DropdownButtonFormField(
-            items: products()
+            items: productsBloc.products
                 .map(
                   (e) => DropdownMenuItem(
                     value: e,

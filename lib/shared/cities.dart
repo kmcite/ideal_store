@@ -33,11 +33,7 @@ enum City {
   Tor_Ghar,
   Upper_Chitral,
   Upper_Dir,
-  Upper_Kohistan
-}
+  Upper_Kohistan;
 
-extension CityName on City {
-  String get nameR {
-    return toString().split('.').last.replaceAll('_', ' ');
-  }
+  String get cityName => name.replaceAll('_', ' ');
 }

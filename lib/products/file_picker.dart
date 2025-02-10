@@ -1,4 +1,5 @@
-import 'package:ideal_store/main.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:manager/manager.dart';
 
 Future<Uint8List?> filePicker() async {
   FilePickerResult? filePickerResult = await FilePicker.platform.pickFiles(

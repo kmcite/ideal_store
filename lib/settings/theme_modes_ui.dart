@@ -1,4 +1,6 @@
-import '../main.dart';
+import 'package:ideal_store/navigator.dart';
+import 'package:ideal_store/settings/settings_controller.dart';
+import 'package:manager/manager.dart';
 
 class ThemeModesUI extends UI {
   const ThemeModesUI({super.key});
@@ -13,10 +15,10 @@ class ThemeModesUI extends UI {
           ...ThemeMode.values.map(
             (mode) {
               return ElevatedButton(
-                onPressed: settingsRM.themeMode() == mode
+                onPressed: settingsBloc.themeMode() == mode
                     ? null
                     : () {
-                        settingsRM.themeMode(mode);
+                        settingsBloc.themeMode(mode);
                       },
                 child: Icon(
                   mode.icon,
@@ -28,7 +30,7 @@ class ThemeModesUI extends UI {
           Divider(),
           ElevatedButton(
             onPressed: () {
-              navigator.pop();
+              navigator.back();
             },
             child: Icon(
               Icons.arrow_back,

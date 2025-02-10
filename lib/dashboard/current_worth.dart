@@ -1,10 +1,10 @@
 // import 'package:ideal_store/main.dart';
 
-import '../products/product.dart';
+import 'package:ideal_store/products/products_bloc.dart';
 
 String get currentWorth {
   late String worth;
-  double temp = products().fold(
+  double temp = productsBloc.products.fold(
       0.0,
       (previousValue, element) =>
           previousValue + (element.stock * element.price));

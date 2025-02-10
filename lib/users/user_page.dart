@@ -1,18 +1,19 @@
-import 'package:ideal_store/authentication/authentication.dart';
+import 'package:ideal_store/users/authentication.dart';
+import 'package:manager/manager.dart';
 
-import '../../main.dart';
+import 'user_tile.dart';
 
-final customerRM = RM.inject<User>(() => throw UnimplementedError());
-
-final editCustomerRM = rms<int>(0);
-
-class CustomerPage extends UI {
-  const CustomerPage({super.key});
+class UserPage extends UI {
+  const UserPage({super.key});
   @override
   Widget build(BuildContext context) {
-    User customer([User? user]) {
-      if (user != null) users(user);
-      return users().firstWhere((user) => user.id == editCustomerRM.state);
+    User user([User? user]) {
+      if (user != null) {
+        userRM
+          ..state = user
+          ..notify();
+      }
+      return userRM.of(context);
     }
 
     return Scaffold(
@@ -37,9 +38,9 @@ class CustomerPage extends UI {
             ),
           ),
           'ID'.text().pad(),
-          (customer().id).text().pad(),
+          (user().id).text().pad(),
           'NAME'.text().pad(),
-          (customer().name).text(textScaleFactor: 2).pad(),
+          (user().name).text(textScaleFactor: 2).pad(),
           'CITY'.text().pad(),
           // (customer().city).text(textScaleFactor: 2).pad(),
           'PRODUCTS'.text().pad(),
