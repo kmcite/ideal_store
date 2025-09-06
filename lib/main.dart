@@ -1,82 +1,87 @@
-import 'package:ideal_store/application_page.dart';
+export 'package:flutter/material.dart' hide State;
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:forui/forui.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:ideal_store/domain/api/categories_repository.dart';
+import 'package:ideal_store/domain/api/orders_repository.dart';
+import 'package:ideal_store/domain/api/products_repository.dart';
+import 'package:ideal_store/domain/api/repository.dart';
+import 'package:ideal_store/domain/api/settings_repository.dart';
+import 'package:ideal_store/domain/api/users_repository.dart';
+import 'package:ideal_store/home/authentication_page.dart';
+import 'package:ideal_store/home/home_page.dart';
+import 'package:ideal_store/home/users/authentication.dart';
+import 'package:ideal_store/main.dart';
 import 'package:ideal_store/navigator.dart';
 import 'package:ideal_store/objectbox.g.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ideal_store/settings/settings_controller.dart';
-import 'package:manager/manager.dart';
-import 'package:path/path.dart' as path;
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+export '../../domain/api/watchers.dart';
 
 void main() async {
   FlutterNativeSplash.preserve(
     widgetsBinding: WidgetsFlutterBinding.ensureInitialized(),
   );
   final appInfo = await PackageInfo.fromPlatform();
-  final dir = await getApplicationDocumentsDirectory();
-  store = await openStore(
-    directory: path.join(dir.path, appInfo.appName),
-  );
-  await RM.storageInitializer(HiveStorage());
+  final path = await getApplicationDocumentsDirectory();
+  final store = await openStore(directory: join(path.path, appInfo.appName));
+  await Hive.initFlutter(appInfo.appName);
+  final box = await Hive.openBox(appInfo.appName);
+
+  service(store);
+  service(box);
+
+  /// REPOSITORIES
+  repository(NavigationRepository());
+  repository(CategoriesRepository());
+  repository(ProductsRepository());
+  repository(OrdersRepository());
+  repository(AuthenticationRepository());
+  repository(UsersRepository());
+  repository(SettingsRepository());
+
   runApp(
     IdealStore(),
   );
 }
 
-late Store store;
-
-class IdealStore extends UI {
+class IdealStore extends StatefulWidget {
   const IdealStore({super.key});
 
-  String? get fontFamily {
-    try {
-      return GoogleFonts.getFont(settingsBloc.font()).fontFamily;
-    } catch (e) {
-      return null;
-    }
-  }
+  @override
+  State<IdealStore> createState() => _IdealStoreState();
+}
+
+class _IdealStoreState extends State<IdealStore> {
+  late SettingsRepository settingsRepository = depend();
+  late AuthenticationRepository authenticationRepository = depend();
+
+  bool get dark => settingsRepository.dark;
+  User? get currentUser => authenticationRepository.currentUser;
+
+  bool get authenticated => currentUser != null;
 
   @override
-  void didMountWidget(BuildContext context) {
-    super.didMountWidget(context);
+  void initState() {
+    super.initState();
     FlutterNativeSplash.remove();
+    settingsRepository.watch().listen(listener);
   }
 
   @override
   Widget build(BuildContext context) {
-    return ShadApp.material(
-      home: ApplicationPage(),
+    FlutterNativeSplash.remove();
+    return MaterialApp(
+      navigatorKey: key,
       debugShowCheckedModeBanner: false,
-      navigatorKey: navigator.navigatorKey,
-      // theme: FlexThemeData.light(
-      //   colorScheme: ColorScheme.fromSwatch(
-      //     primarySwatch: settingsBloc.materialColor(),
-      //   ),
-      //   subThemesData: FlexSubThemesData(
-      //     defaultRadius: 10,
-      //     inputDecoratorBorderType: FlexInputBorderType.outline,
-      //   ),
-      //   fontFamily: fontFamily,
-      // ),
-      // darkTheme: FlexThemeData.dark(
-      //   colorScheme: ColorScheme.fromSwatch(
-      //     primarySwatch: settingsBloc.materialColor(),
-      //     brightness: Brightness.dark,
-      //   ),
-      //   subThemesData: FlexSubThemesData(
-      //     defaultRadius: 10,
-      //     inputDecoratorBorderType: FlexInputBorderType.outline,
-      //   ),
-      //   fontFamily: fontFamily,
-      // ),
-      themeMode: settingsBloc.themeMode(),
+      builder: (context, child) => FTheme(
+        data: dark ? FThemes.yellow.dark : FThemes.green.light,
+        child: child!,
+      ),
+      home: authenticated ? HomePage() : AuthenticationPage(),
+      theme: dark ? ThemeData.dark() : ThemeData(),
+      darkTheme: ThemeData.dark(),
     );
   }
 }
-
-class AppBloc {
-  final indexRM = RM.inject(() => 0);
-  int get index => indexRM.state;
-  setIndex(int i) => indexRM.state = i;
-}
-
-final appBloc = AppBloc();

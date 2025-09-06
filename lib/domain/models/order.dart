@@ -1,0 +1,31 @@
+import 'package:ideal_store/domain/models/product.dart';
+import 'package:objectbox/objectbox.dart';
+
+import '../../home/users/authentication.dart';
+
+enum OrderStatus {
+  ordered,
+  delivering,
+  complete;
+}
+
+@Entity()
+class Order extends Model {
+  @Id(assignable: true)
+  int id = 0;
+  bool editing = true;
+
+  int statusIndex = 0;
+  @Transient()
+  OrderStatus get orderStatus => OrderStatus.values[statusIndex];
+  @Transient()
+  set orderStatus(OrderStatus status) =>
+      statusIndex = OrderStatus.values.indexOf(status);
+
+  DateTime createdOn = DateTime.now();
+
+  final customer = ToOne<User>();
+  final products = ToMany<Product>();
+}
+
+class Model {}

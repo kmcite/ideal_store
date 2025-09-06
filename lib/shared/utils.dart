@@ -1,16 +1,22 @@
-import 'package:flutter/services.dart';
-import 'package:manager/manager.dart';
+import 'package:ideal_store/main.dart';
 
-final imageRM = RM.injectFuture(
-  () async => Uint8List.sublistView(
-    await rootBundle.load('assets/icon.png'),
-  ),
-);
+// final imageRM = RM.injectFuture(
+//   () async => Uint8List.sublistView(
+//     await rootBundle.load('assets/icon.png'),
+//   ),
+// );
 
-T? mayBeOf<T extends InheritedWidget>(BuildContext context) {
-  return context.dependOnInheritedWidgetOfExactType<T>();
+extension Dya on dynamic {
+  Widget text({double textScaleFactor = 1}) => Text(
+        toString(),
+        // ignore: deprecated_member_use
+        textScaleFactor: textScaleFactor,
+      );
 }
 
-T of<T extends InheritedWidget>(BuildContext context) {
-  return mayBeOf<T>(context) as T;
+extension Pa on Widget {
+  Padding pad() => Padding(
+        padding: EdgeInsets.all(8),
+        child: this,
+      );
 }

@@ -14,10 +14,10 @@ import 'package:objectbox/internal.dart'
 import 'package:objectbox/objectbox.dart' as obx;
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
-import 'categories/categories.dart';
-import 'orders/order.dart';
-import 'products/product.dart';
-import 'users/authentication.dart';
+import 'domain/models/order.dart';
+import 'domain/models/product.dart';
+import 'domain/models/categories.dart';
+import 'home/users/authentication.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
