@@ -161,12 +161,18 @@
           "type": 6
         }
       ],
-      "relations": []
+      "relations": [
+        {
+          "id": "2:3506712559381909721",
+          "name": "products",
+          "targetId": "3:355487824353299567"
+        }
+      ]
     }
   ],
   "lastEntityId": "4:313837607840858796",
   "lastIndexId": "1:1520488486171729808",
-  "lastRelationId": "1:7923412917393183193",
+  "lastRelationId": "2:3506712559381909721",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,

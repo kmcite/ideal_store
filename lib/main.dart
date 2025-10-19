@@ -1,23 +1,27 @@
-export 'package:flutter/material.dart' hide State;
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:forui/forui.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:ideal_store/domain/api/authentication_repository.dart';
 import 'package:ideal_store/domain/api/categories_repository.dart';
 import 'package:ideal_store/domain/api/orders_repository.dart';
 import 'package:ideal_store/domain/api/products_repository.dart';
-import 'package:ideal_store/domain/api/repository.dart';
 import 'package:ideal_store/domain/api/settings_repository.dart';
 import 'package:ideal_store/domain/api/users_repository.dart';
-import 'package:ideal_store/home/authentication_page.dart';
-import 'package:ideal_store/home/home_page.dart';
-import 'package:ideal_store/home/users/authentication.dart';
+import 'package:ideal_store/features/settings/authentication_page.dart';
+import 'package:ideal_store/features/home/home_page.dart';
+import 'package:ideal_store/features/users/authentication.dart';
 import 'package:ideal_store/main.dart';
-import 'package:ideal_store/navigator.dart';
+import 'package:ideal_store/utils/navigator.dart';
 import 'package:ideal_store/objectbox.g.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-export '../../domain/api/watchers.dart';
+
+export 'package:flutter/material.dart' hide State;
+export 'package:ideal_store/utils/bloc.dart';
+export 'package:ideal_store/utils/repository.dart';
+export 'package:ideal_store/utils/rehive.dart';
+export 'package:ideal_store/utils/crud.dart';
 
 void main() async {
   FlutterNativeSplash.preserve(
@@ -67,11 +71,11 @@ class _IdealStoreState extends State<IdealStore> {
     super.initState();
     FlutterNativeSplash.remove();
     settingsRepository.watch().listen(listener);
+    authenticationRepository.watch().listen(listener);
   }
 
   @override
   Widget build(BuildContext context) {
-    FlutterNativeSplash.remove();
     return MaterialApp(
       navigatorKey: key,
       debugShowCheckedModeBanner: false,
@@ -81,6 +85,7 @@ class _IdealStoreState extends State<IdealStore> {
       ),
       home: authenticated ? HomePage() : AuthenticationPage(),
       theme: dark ? ThemeData.dark() : ThemeData(),
+      themeMode: dark ? ThemeMode.dark : ThemeMode.light,
       darkTheme: ThemeData.dark(),
     );
   }

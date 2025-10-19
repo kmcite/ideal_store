@@ -6,7 +6,7 @@ version: 0.1.0
 environment:
   sdk: ^3.6.0
 dependencies:
-  forui: ^0.13.1
+  forui: ^0.15.1
   flutter:
     sdk: flutter
   uuid: ^4.4.0

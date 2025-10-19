@@ -1,27 +1,32 @@
-import 'dart:async';
-import 'package:ideal_store/domain/api/repository.dart';
+import 'package:ideal_store/main.dart';
 
-class SettingsRepository extends Repository<bool> {
+class SettingsRepository extends HiveRepository<bool> {
   SettingsRepository() {
-    controller.add(0);
+    try {
+      final i = get('dark');
+      dark = i == '1';
+      notify();
+    } catch (e) {
+      save('dark', '1');
+      dark = true;
+    }
   }
 
-  int _count = 0;
-  void notifyListeners() => controller.add(_count + 1);
-  final controller = StreamController<int>.broadcast();
-
-  bool dark = false;
+  late bool dark;
 
   void toggleDark() {
     dark = !dark;
-    notifyListeners();
+    notify();
+  }
+
+  @override
+  void notify() {
+    super.notify();
+    save('dark', dark ? '1' : '0');
   }
 
   void setDark(bool _dark) {
     dark = _dark;
-    notifyListeners();
+    notify();
   }
-
-  Stream<int> watch() => controller.stream;
-  // Stream<bool> watchDark() => controller.stream.map((_) => dark);
 }

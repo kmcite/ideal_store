@@ -1,7 +1,7 @@
 import 'package:ideal_store/domain/models/product.dart';
 import 'package:objectbox/objectbox.dart';
 
-import '../../home/users/authentication.dart';
+import '../../features/users/authentication.dart';
 
 enum OrderStatus {
   ordered,
